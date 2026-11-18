@@ -71,4 +71,13 @@ export class ProfileService {
     });
     // TODO: emit event + notify admin
   }
+
+  async updatePhoto(employeeId: string, filename: string): Promise<Profile> {
+    await this.getMe(employeeId);
+    await this.employees.update(employeeId, {
+      photoUrl: `/uploads/${filename}`,
+    });
+    // TODO: emit event + notify admin
+    return this.getMe(employeeId);
+  }
 }
