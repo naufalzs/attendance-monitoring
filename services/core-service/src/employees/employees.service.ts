@@ -1,10 +1,18 @@
-import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
+  OnApplicationBootstrap,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Role } from './role.enum';
 import * as bcrypt from 'bcrypt';
+import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 const BCRYPT_ROUNDS = 10;
 
@@ -46,5 +54,52 @@ export class EmployeesService implements OnApplicationBootstrap {
       .addSelect('employee.passwordHash')
       .where('employee.email = :email', { email })
       .getOne();
+  }
+
+  findAll() {
+    return this.employees.find({ order: { name: 'ASC' } });
+  }
+
+  async findOne(id: string): Promise<Employee> {
+    const employee = await this.employees.findOneBy({ id });
+    if (!employee) {
+      throw new NotFoundException('Employee not found');
+    }
+    return employee;
+  }
+
+  async create(dto: CreateEmployeeDto): Promise<Employee> {
+    const { password, ...rest } = dto;
+    await this.checkEmail(rest.email);
+    const saved = await this.employees.save(
+      this.employees.create({
+        ...rest,
+        passwordHash: await bcrypt.hash(password, BCRYPT_ROUNDS),
+      }),
+    );
+    return this.findOne(saved.id);
+  }
+
+  async update(id: string, dto: UpdateEmployeeDto): Promise<Employee> {
+    const employee = await this.findOne(id);
+    const { password, ...rest } = dto;
+    if (rest.email && rest.email !== employee.email) {
+      await this.checkEmail(rest.email);
+    }
+
+    await this.employees.update(id, {
+      ...rest,
+      ...(password && {
+        passwordHash: await bcrypt.hash(password, BCRYPT_ROUNDS),
+      }),
+    });
+
+    return this.findOne(id);
+  }
+
+  private async checkEmail(email: string): Promise<void> {
+    if (await this.employees.exists({ where: { email } })) {
+      throw new ConflictException('Email already exists');
+    }
   }
 }
