@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+npm-debug.log*
+.DS_Store
+
+# env / secrets
+.env
+.env.*
+!.env.example
+*firebase*.json
+
+# runtime
+uploads/
