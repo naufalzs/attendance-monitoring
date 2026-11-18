@@ -39,4 +39,12 @@ export class EmployeesService implements OnApplicationBootstrap {
     });
     this.logger.log(`Seeded admin account ${email}`);
   }
+
+  findByEmailWithPassword(email: string): Promise<Employee | null> {
+    return this.employees
+      .createQueryBuilder('employee')
+      .addSelect('employee.passwordHash')
+      .where('employee.email = :email', { email })
+      .getOne();
+  }
 }
