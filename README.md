@@ -62,7 +62,7 @@ cd apps/admin-web        && npm ci && npm run dev -- --port 5174
 Seed data are provided for demo purposes. To use them, run the seed in core-service once the stack is running:
 
 ```bash
-cd services/core-service && npm run seed
+cd services/core-service && npm ci && npm run seed
 ```
 
 The admin account doesn't need the seed: core-service creates it on first start from `ADMIN_EMAIL` / `ADMIN_PASSWORD` in `services/core-service/.env`.
