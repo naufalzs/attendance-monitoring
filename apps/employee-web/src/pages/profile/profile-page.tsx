@@ -1,5 +1,6 @@
-import { CameraIcon } from 'lucide-react'
+import { CameraIcon, PencilIcon } from 'lucide-react'
 import { Link } from 'react-router'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { ProfileAvatar } from './profile-avatar'
 import { useProfile } from './use-profile'
@@ -30,6 +31,11 @@ export function ProfilePage() {
           <dt className="sr-only">Phone</dt>
           <dd className="flex items-center justify-center gap-1 text-sm sm:justify-start">
             {profile.phone}
+            <Button variant="ghost" size="icon-xs" asChild>
+              <Link to="phone" aria-label="Edit phone">
+                <PencilIcon />
+              </Link>
+            </Button>
           </dd>
         </dl>
       </CardContent>
