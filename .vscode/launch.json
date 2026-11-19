@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "core-service",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run start:dev",
+      "cwd": "${workspaceFolder}/services/core-service"
+    },
+    {
+      "name": "log-service",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run start:dev",
+      "cwd": "${workspaceFolder}/services/log-service"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Backend (core + log)",
+      "configurations": ["core-service", "log-service"],
+      "stopAll": true
+    }
+  ]
+}
