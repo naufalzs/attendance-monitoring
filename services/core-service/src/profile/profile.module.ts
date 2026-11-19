@@ -6,10 +6,12 @@ import { Employee } from '../employees/entities/employee.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LOG_QUEUE } from './events/profile-updated.event';
 import { ConfigService } from '@nestjs/config';
+import { FirebaseModule } from '../firebase/firebase.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Employee]),
+    FirebaseModule,
     ClientsModule.registerAsync([
       {
         name: LOG_QUEUE,

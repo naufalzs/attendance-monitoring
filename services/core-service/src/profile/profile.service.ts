@@ -18,6 +18,7 @@ import {
   ProfileUpdatedEvent,
 } from './events/profile-updated.event';
 import { ClientProxy } from '@nestjs/microservices';
+import { FirebaseService } from '../firebase/firebase.service';
 
 const BCRYPT_ROUNDS = 10;
 
@@ -35,6 +36,7 @@ export class ProfileService {
     private readonly employees: Repository<Employee>,
     @Inject(LOG_QUEUE)
     private readonly logQueue: ClientProxy,
+    private readonly firebase: FirebaseService,
   ) {}
 
   async getMe(employeeId: string): Promise<Profile> {
@@ -58,7 +60,7 @@ export class ProfileService {
     await this.getMe(employeeId);
     await this.employees.update(employeeId, { phone: dto.phone });
     const profile = await this.getMe(employeeId);
-    this.publishProfileUpdated(employeeId, profile.name, ['phone']);
+    await this.publishProfileUpdated(employeeId, profile.name, ['phone']);
     return profile;
   }
 
@@ -83,7 +85,7 @@ export class ProfileService {
     await this.employees.update(employeeId, {
       passwordHash: await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS),
     });
-    this.publishProfileUpdated(employeeId, employee.name, ['password']);
+    await this.publishProfileUpdated(employeeId, employee.name, ['password']);
   }
 
   async updatePhoto(employeeId: string, filename: string): Promise<Profile> {
@@ -92,11 +94,11 @@ export class ProfileService {
       photoUrl: `/uploads/${filename}`,
     });
     const profile = await this.getMe(employeeId);
-    this.publishProfileUpdated(employeeId, profile.name, ['photo']);
+    await this.publishProfileUpdated(employeeId, profile.name, ['photo']);
     return profile;
   }
 
-  private publishProfileUpdated(
+  private async publishProfileUpdated(
     employeeId: string,
     name: string,
     changes: ProfileChange[],
@@ -112,5 +114,6 @@ export class ProfileService {
         this.logger.error(`Failed to publish ${PROFILE_UPDATED}`, error);
       },
     });
+    await this.firebase.notifyAdmin(event);
   }
 }

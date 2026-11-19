@@ -5,6 +5,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AttendanceModule } from './attendance/attendance.module';
     AuthModule,
     ProfileModule,
     AttendanceModule,
+    FirebaseModule,
   ],
   controllers: [],
   providers: [],
