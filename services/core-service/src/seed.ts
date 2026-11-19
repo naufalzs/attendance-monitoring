@@ -12,6 +12,11 @@ import { Role } from './employees/role.enum';
 const DEMO_PASSWORD = 'password123';
 const DAYS_PER_EMPLOYEE = 10;
 
+// Days (0 = most recent weekday) each demo employee forgot to clock out, keyed by
+// DEMO_EMPLOYEES index. Admin table sorts date DESC then name ASC, so these land
+// on rows 1, 3 and 8 of page 1 — visible and never adjacent.
+const MISSING_CLOCK_OUT_DAYS: number[][] = [[0], [0], [2]];
+
 const DEMO_EMPLOYEES = [
   {
     name: 'Naufal',
@@ -79,10 +84,9 @@ async function seed() {
         employeeId: employee.id,
         date,
         clockInAt: jakartaTime(date, 7 * 60 + 45 + ((d * 7 + e * 11) % 45)),
-        clockOutAt:
-          d === e + 2
-            ? null
-            : jakartaTime(date, 17 * 60 + ((d * 13 + e * 5) % 45)),
+        clockOutAt: MISSING_CLOCK_OUT_DAYS[e].includes(dates.length - 1 - d)
+          ? null
+          : jakartaTime(date, 17 * 60 + ((d * 13 + e * 5) % 45)),
       }));
 
       const result = await attendance
