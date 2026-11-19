@@ -1,16 +1,25 @@
 import { PlusIcon, SearchIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import useSWR from 'swr'
 import { EmployeeTable } from '@/components/employees/employee-table'
 import { Button } from '@/components/ui/button'
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { useDebounce } from '@/hooks/use-debounce'
 import type { Employee } from '@/lib/employees'
 
 export function EmployeeListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.get('q') ?? ''
+  const [search, setSearch] = useState(query)
+  const debouncedSearch = useDebounce(search)
   const { data = [], isLoading } = useSWR<Employee[]>('/employees')
+
+  useEffect(() => {
+    if (debouncedSearch === query) return
+    setSearchParams(debouncedSearch ? { q: debouncedSearch } : {}, { replace: true })
+  }, [debouncedSearch, query, setSearchParams])
 
   const needle = query.trim().toLowerCase()
   const employees = needle
@@ -41,12 +50,8 @@ export function EmployeeListPage() {
             placeholder="Search employees"
             aria-label="Search employees"
             className="pl-8"
-            value={query}
-            onChange={(event) =>
-              setSearchParams(event.target.value ? { q: event.target.value } : {}, {
-                replace: true,
-              })
-            }
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
         <EmployeeTable
