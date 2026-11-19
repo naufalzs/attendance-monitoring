@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { EmployeesModule } from '../employees/employees.module';
+import { FirebaseModule } from '../firebase/firebase.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -11,6 +12,7 @@ import { RolesGuard } from './roles.guard';
 @Module({
   imports: [
     EmployeesModule,
+    FirebaseModule,
     JwtModule.registerAsync({
       global: true,
       inject: [ConfigService],
