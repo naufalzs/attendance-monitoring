@@ -6,7 +6,6 @@ import { LoginPage } from '@/pages/login-page'
 import { PasswordPage } from '@/pages/profile/password-page'
 import { PhonePage } from '@/pages/profile/phone-page'
 import { PhotoPage } from '@/pages/profile/photo-page'
-import { ProfileLayout } from '@/pages/profile/profile-layout'
 import { ProfilePage } from '@/pages/profile/profile-page'
 import { SummaryPage } from '@/pages/summary-page'
 
@@ -17,7 +16,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route element={<RequireAuth />}>
           <Route element={<AppLayout />}>
-            <Route path="/profile" element={<ProfileLayout />}>
+            <Route path="/profile">
               <Route index element={<ProfilePage />} />
               <Route path="photo" element={<PhotoPage />} />
               <Route path="phone" element={<PhonePage />} />

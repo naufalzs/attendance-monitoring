@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { FieldGroup } from '@/components/ui/field'
 import { api, getErrorMessage } from '@/lib/api'
 import type { Profile } from '@/lib/profile'
-import { useProfile } from './use-profile'
+import { useProfile } from '@/hooks/use-profile'
 
 const phoneSchema = z.object({
   phone: z

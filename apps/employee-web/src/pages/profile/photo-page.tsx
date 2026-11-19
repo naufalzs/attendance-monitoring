@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input'
 import { api, getErrorMessage } from '@/lib/api'
 import type { Profile } from '@/lib/profile'
 import { ProfileAvatar } from './profile-avatar'
-import { useProfile } from './use-profile'
+import { useProfile } from '@/hooks/use-profile'
 
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024
 const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp']

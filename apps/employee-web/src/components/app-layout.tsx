@@ -1,6 +1,10 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
+import useSWR from 'swr'
+import { ProfileSkeleton } from '@/components/profile-skeleton'
 import { Button } from '@/components/ui/button'
+import type { ProfileContext } from '@/hooks/use-profile'
 import { clearToken } from '@/lib/auth'
+import type { Profile } from '@/lib/profile'
 import { cn } from '@/lib/utils'
 
 const navItems = [
@@ -10,6 +14,8 @@ const navItems = [
 
 export function AppLayout() {
   const navigate = useNavigate()
+  const { data: profile, mutate } = useSWR<Profile>('/profile/me')
+  const setProfile = (next: Profile) => mutate(next, { revalidate: false })
 
   function logout() {
     clearToken()
@@ -45,7 +51,11 @@ export function AppLayout() {
         </div>
       </header>
       <main className="mx-auto max-w-3xl p-4">
-        <Outlet />
+        {profile ? (
+          <Outlet context={{ profile, setProfile } satisfies ProfileContext} />
+        ) : (
+          <ProfileSkeleton />
+        )}
       </main>
     </div>
   )

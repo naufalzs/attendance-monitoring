@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { AttendanceCard } from './attendance-card'
 import { ProfileAvatar } from './profile-avatar'
-import { useProfile } from './use-profile'
+import { useProfile } from '@/hooks/use-profile'
 
 export function ProfilePage() {
   const { profile } = useProfile()
