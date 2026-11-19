@@ -9,6 +9,11 @@ services:
     ports: ["5432:5432"]
     volumes:
       - main_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d main_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   log-db:
     image: postgres:16
     environment:
@@ -18,9 +23,49 @@ services:
     ports: ["5433:5432"]
     volumes:
       - log_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d log_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   rabbitmq:
     image: rabbitmq:4-management
     ports: ["5672:5672", "15672:15672"]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+  core-service:
+    build: ./services/core-service
+    env_file: ./services/core-service/.env
+    # container-network hosts override the localhost URLs in .env
+    environment:
+      DATABASE_URL: postgres://app:app_pw@main-db:5432/main_db
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    ports: ["3003:3003"]
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      main-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  log-service:
+    build: ./services/log-service
+    env_file: ./services/log-service/.env
+    environment:
+      DATABASE_URL: postgres://app:app_pw@log-db:5432/log_db
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      log-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   main_data:
   log_data:
