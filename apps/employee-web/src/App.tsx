@@ -3,6 +3,7 @@ import { AppLayout } from '@/components/app-layout'
 import { RequireAuth } from '@/components/require-auth'
 import { Toaster } from '@/components/ui/sonner'
 import { LoginPage } from '@/pages/login-page'
+import { PhotoPage } from '@/pages/profile/photo-page'
 import { ProfileLayout } from '@/pages/profile/profile-layout'
 import { ProfilePage } from '@/pages/profile/profile-page'
 
@@ -15,6 +16,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/profile" element={<ProfileLayout />}>
               <Route index element={<ProfilePage />} />
+              <Route path="photo" element={<PhotoPage />} />
             </Route>
           </Route>
         </Route>
