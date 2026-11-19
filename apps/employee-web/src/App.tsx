@@ -1,8 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
+import { AppLayout } from '@/components/app-layout'
 import { RequireAuth } from '@/components/require-auth'
 import { Toaster } from '@/components/ui/sonner'
-import { HomePage } from '@/pages/home-page'
 import { LoginPage } from '@/pages/login-page'
+import { ProfileLayout } from '@/pages/profile/profile-layout'
+import { ProfilePage } from '@/pages/profile/profile-page'
 
 export default function App() {
   return (
@@ -10,9 +12,13 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route element={<RequireAuth />}>
-          <Route path="/" element={<HomePage />} />
+          <Route element={<AppLayout />}>
+            <Route path="/profile" element={<ProfileLayout />}>
+              <Route index element={<ProfilePage />} />
+            </Route>
+          </Route>
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/profile" replace />} />
       </Routes>
       <Toaster richColors position="top-right" />
     </BrowserRouter>
