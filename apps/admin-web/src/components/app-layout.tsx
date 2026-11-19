@@ -3,7 +3,10 @@ import { Button } from '@/components/ui/button'
 import { clearToken } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 
-const navItems = [{ to: '/', label: 'Attendance' }]
+const navItems = [
+  { to: '/', label: 'Attendance' },
+  { to: '/employees', label: 'Employees' },
+]
 
 export function AppLayout() {
   const navigate = useNavigate()
@@ -25,7 +28,7 @@ export function AppLayout() {
               <NavLink
                 key={item.to}
                 to={item.to}
-                end
+                end={item.to === '/'}
                 className={({ isActive }) =>
                   cn(
                     'rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground',
