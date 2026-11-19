@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { DeleteEmployeeButton } from '@/components/employees/delete-employee-button'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Table,
   TableBody,
@@ -73,11 +74,21 @@ export function EmployeeTable({
               <TableCell className="tabular-nums">{employee.phone}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="icon-xs" asChild>
-                    <Link to={employee.id} aria-label={`Edit ${employee.name}`} title="Edit">
-                      <PencilIcon />
-                    </Link>
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon-lg"
+                        className="hover:bg-foreground/10 [&_svg]:size-5"
+                        asChild
+                      >
+                        <Link to={employee.id} aria-label={`Edit ${employee.name}`}>
+                          <PencilIcon />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Edit</TooltipContent>
+                  </Tooltip>
                   <DeleteEmployeeButton employee={employee} />
                 </div>
               </TableCell>

@@ -14,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { api, getErrorMessage } from '@/lib/api'
 import type { Employee } from '@/lib/employees'
 
@@ -35,18 +36,22 @@ export function DeleteEmployeeButton({ employee }: { employee: Employee }) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          className="text-destructive hover:text-destructive"
-          aria-label={`Delete ${employee.name}`}
-          title="Delete"
-          disabled={deleting}
-        >
-          <Trash2Icon />
-        </Button>
-      </AlertDialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-lg"
+              className="text-destructive hover:bg-destructive/15 hover:text-destructive [&_svg]:size-5"
+              aria-label={`Delete ${employee.name}`}
+              disabled={deleting}
+            >
+              <Trash2Icon />
+            </Button>
+          </AlertDialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Delete</TooltipContent>
+      </Tooltip>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete {employee.name}?</AlertDialogTitle>

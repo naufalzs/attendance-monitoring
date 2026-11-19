@@ -6,6 +6,7 @@ import { EmployeeTable } from '@/components/employees/employee-table'
 import { Button } from '@/components/ui/button'
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useDebounce } from '@/hooks/use-debounce'
 import type { Employee } from '@/lib/employees'
 
@@ -35,11 +36,16 @@ export function EmployeeListPage() {
       <CardHeader>
         <CardTitle>Employees</CardTitle>
         <CardAction>
-          <Button size="icon-sm" aria-label="Add employee" title="Add employee" asChild>
-            <Link to="new">
-              <PlusIcon />
-            </Link>
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button size="icon-sm" aria-label="Add employee" asChild>
+                <Link to="new">
+                  <PlusIcon />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Add employee</TooltipContent>
+          </Tooltip>
         </CardAction>
       </CardHeader>
       <CardContent className="grid gap-4">

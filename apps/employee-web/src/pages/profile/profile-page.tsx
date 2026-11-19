@@ -33,7 +33,12 @@ export function ProfilePage() {
             <dt className="sr-only">Phone number</dt>
             <dd className="flex items-center justify-center gap-1 text-sm sm:justify-start">
               {profile.phone}
-              <Button variant="ghost" size="icon-xs" asChild>
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                className="hover:bg-foreground/10 [&_svg]:size-5"
+                asChild
+              >
                 <Link to="phone" aria-label="Edit phone number">
                   <PencilIcon />
                 </Link>
