@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
+import { NotificationBell } from '@/components/notification-bell'
 import { Button } from '@/components/ui/button'
 import { clearToken } from '@/lib/auth'
 import { cn } from '@/lib/utils'
@@ -40,9 +41,12 @@ export function AppLayout() {
               </NavLink>
             ))}
           </nav>
-          <Button variant="outline" size="sm" onClick={logout}>
-            Log out
-          </Button>
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <Button variant="outline" size="sm" onClick={logout}>
+              Log out
+            </Button>
+          </div>
         </div>
       </header>
       <main className="mx-auto grid max-w-5xl gap-4 p-4">

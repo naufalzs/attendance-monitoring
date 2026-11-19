@@ -9,7 +9,18 @@ Create the env files first, fill the firebase from credential given from email
 ```bash
 cp services/core-service/.env.example services/core-service/.env   # then fill FIREBASE_*
 cp services/log-service/.env.example services/log-service/.env
+cp apps/admin-web/.env.example apps/admin-web/.env                  # then fill VITE_FIREBASE_*
 ```
+
+### Admin notifications (Firestore)
+
+core-service writes a document to the `notifications` collection whenever an employee changes their phone, photo or password. admin-web listens to it live (bell icon in the header).
+
+The browser reads Firestore directly, so access is locked down by `firestore.rules`: admin-web gets a Firebase custom token from `GET /auth/firebase-token` (admins only), signs in with it, and the rules only allow reads when the token's `role` claim is `ADMIN`. One-time setup in the Firebase project:
+
+1. Project settings → Your apps → add a **Web app**; copy its config into `apps/admin-web/.env`.
+2. **Authentication** → Get started (custom-token sign-in needs no provider enabled).
+3. Deploy the rules: `npx firebase-tools deploy --only firestore:rules --project <project-id>`.
 
 Everything in Docker:
 

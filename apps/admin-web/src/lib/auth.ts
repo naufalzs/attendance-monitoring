@@ -1,4 +1,6 @@
+import { signOut } from 'firebase/auth'
 import { mutate } from 'swr'
+import { firebaseAuth } from '@/lib/firebase'
 
 const TOKEN_KEY = 'accessToken'
 
@@ -10,6 +12,7 @@ export const setToken = (token: string) => localStorage.setItem(TOKEN_KEY, token
 export function clearToken() {
   localStorage.removeItem(TOKEN_KEY)
   void mutate(() => true, undefined, { revalidate: false })
+  void signOut(firebaseAuth)
 }
 
 export function getTokenRole(token: string): string | null {
