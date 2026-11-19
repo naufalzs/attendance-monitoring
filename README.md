@@ -98,6 +98,7 @@ Full, interactive docs at http://localhost:3003/docs. All routes need `Authoriza
 | GET    | `/employees/:id`        | admin    | One employee                                              |
 | POST   | `/employees`            | admin    | Create employee                                           |
 | PATCH  | `/employees/:id`        | admin    | Update employee, including a new password                 |
+| DELETE | `/employees/:id`        | admin    | Delete employee and their attendance (not your own account) |
 
 ## Possible improvements
 

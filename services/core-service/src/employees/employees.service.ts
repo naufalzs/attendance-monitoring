@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
@@ -7,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
+import { Attendance } from '../attendance/entities/attendance.entity';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Role } from './role.enum';
@@ -94,6 +96,18 @@ export class EmployeesService implements OnApplicationBootstrap {
     });
 
     return this.findOne(id);
+  }
+
+  async remove(id: string, currentUserId: string): Promise<void> {
+    if (id === currentUserId) {
+      throw new BadRequestException('You cannot delete your own account');
+    }
+    await this.findOne(id);
+
+    await this.employees.manager.transaction(async (manager) => {
+      await manager.delete(Attendance, { employeeId: id });
+      await manager.delete(Employee, id);
+    });
   }
 
   private async checkEmail(email: string): Promise<void> {

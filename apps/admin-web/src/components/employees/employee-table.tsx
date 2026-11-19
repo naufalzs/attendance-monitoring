@@ -1,5 +1,6 @@
 import { PencilIcon } from 'lucide-react'
 import { Link } from 'react-router'
+import { DeleteEmployeeButton } from '@/components/employees/delete-employee-button'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -45,7 +46,7 @@ export function EmployeeTable({
                 </TableCell>
               ))}
               <TableCell>
-                <Skeleton className="size-6" />
+                <Skeleton className="h-6 w-14" />
               </TableCell>
             </TableRow>
           ))
@@ -71,11 +72,14 @@ export function EmployeeTable({
               <TableCell>{employee.position}</TableCell>
               <TableCell className="tabular-nums">{employee.phone}</TableCell>
               <TableCell>
-                <Button variant="ghost" size="icon-xs" asChild>
-                  <Link to={employee.id} aria-label={`Edit ${employee.name}`} title="Edit">
-                    <PencilIcon />
-                  </Link>
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="icon-xs" asChild>
+                    <Link to={employee.id} aria-label={`Edit ${employee.name}`} title="Edit">
+                      <PencilIcon />
+                    </Link>
+                  </Button>
+                  <DeleteEmployeeButton employee={employee} />
+                </div>
               </TableCell>
             </TableRow>
           ))
