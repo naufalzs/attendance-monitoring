@@ -1,3 +1,6 @@
+import { PencilIcon } from 'lucide-react'
+import { Link } from 'react-router'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -27,6 +30,9 @@ export function EmployeeTable({
           {COLUMNS.map((column) => (
             <TableHead key={column}>{column}</TableHead>
           ))}
+          <TableHead className="w-0">
+            <span className="sr-only">Actions</span>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -38,11 +44,17 @@ export function EmployeeTable({
                   <Skeleton className="h-5 w-28" />
                 </TableCell>
               ))}
+              <TableCell>
+                <Skeleton className="size-6" />
+              </TableCell>
             </TableRow>
           ))
         ) : employees.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={COLUMNS.length} className="py-8 text-center text-muted-foreground">
+            <TableCell
+              colSpan={COLUMNS.length + 1}
+              className="py-8 text-center text-muted-foreground"
+            >
               {emptyMessage}
             </TableCell>
           </TableRow>
@@ -58,6 +70,13 @@ export function EmployeeTable({
               <TableCell>{employee.email}</TableCell>
               <TableCell>{employee.position}</TableCell>
               <TableCell className="tabular-nums">{employee.phone}</TableCell>
+              <TableCell>
+                <Button variant="ghost" size="icon-xs" asChild>
+                  <Link to={employee.id} aria-label={`Edit ${employee.name}`} title="Edit">
+                    <PencilIcon />
+                  </Link>
+                </Button>
+              </TableCell>
             </TableRow>
           ))
         )}
