@@ -1,8 +1,9 @@
-import { SearchIcon } from 'lucide-react'
-import { useSearchParams } from 'react-router'
+import { PlusIcon, SearchIcon } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router'
 import useSWR from 'swr'
 import { EmployeeTable } from '@/components/employees/employee-table'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import type { Employee } from '@/lib/employees'
 
@@ -24,6 +25,13 @@ export function EmployeeListPage() {
     <Card>
       <CardHeader>
         <CardTitle>Employees</CardTitle>
+        <CardAction>
+          <Button size="icon-sm" aria-label="Add employee" title="Add employee" asChild>
+            <Link to="new">
+              <PlusIcon />
+            </Link>
+          </Button>
+        </CardAction>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="relative">
