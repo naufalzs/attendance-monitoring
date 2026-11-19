@@ -36,9 +36,15 @@ docker compose up -d postgres rabbitmq
 
 In Docker, compose overrides `DATABASE_URL` / `RABBITMQ_URL` to use the `postgres` / `rabbitmq` hostnames; the `.env` files keep the `localhost` values for local runs. Uploaded photos live in `./uploads` (mounted into core-service).
 
+The web apps are built into static files served by nginx. Vite bakes `VITE_*` values in at build time from each app's `.env`, so rebuild after changing them: `docker compose up -d --build employee-web admin-web`.
+
+In VS Code, `.vscode/launch.json` has a launch config per service and app, plus `Backend (core + log)`, `Frontend (employee + admin)` and `Full stack` compounds.
+
 | Service                    | URL                                                          |
 | -------------------------- | ------------------------------------------------------------ |
 | core-service API / Swagger | http://localhost:3003, http://localhost:3003/docs            |
+| employee-web               | http://localhost:8080 (Docker), http://localhost:5173 (dev)  |
+| admin-web                  | http://localhost:8081 (Docker), http://localhost:5174 (dev)  |
 | Postgres                   | `localhost:55432` (app / app), databases `main_db`, `log_db` |
 | RabbitMQ AMQP              | `localhost:55672`                                            |
 | RabbitMQ UI                | http://localhost:55673 (guest / guest)                       |

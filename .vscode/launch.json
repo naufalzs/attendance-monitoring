@@ -14,12 +14,36 @@
       "request": "launch",
       "command": "npm run start:dev",
       "cwd": "${workspaceFolder}/services/log-service"
+    },
+    {
+      "name": "employee-web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --port 5173 --strictPort",
+      "cwd": "${workspaceFolder}/apps/employee-web"
+    },
+    {
+      "name": "admin-web",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev -- --port 5174 --strictPort",
+      "cwd": "${workspaceFolder}/apps/admin-web"
     }
   ],
   "compounds": [
     {
       "name": "Backend (core + log)",
       "configurations": ["core-service", "log-service"],
+      "stopAll": true
+    },
+    {
+      "name": "Frontend (employee + admin)",
+      "configurations": ["employee-web", "admin-web"],
+      "stopAll": true
+    },
+    {
+      "name": "Full stack",
+      "configurations": ["core-service", "log-service", "employee-web", "admin-web"],
       "stopAll": true
     }
   ]

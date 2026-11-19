@@ -66,6 +66,20 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  employee-web:
+    build: ./apps/employee-web
+    ports: ["8080:80"]
+    depends_on:
+      - core-service
+    restart: unless-stopped
+
+  admin-web:
+    build: ./apps/admin-web
+    ports: ["8081:80"]
+    depends_on:
+      - core-service
+    restart: unless-stopped
+
 volumes:
   main_data:
   log_data:
