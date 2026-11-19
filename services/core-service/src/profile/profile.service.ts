@@ -19,8 +19,7 @@ import {
 } from './events/profile-updated.event';
 import { ClientProxy } from '@nestjs/microservices';
 import { FirebaseService } from '../firebase/firebase.service';
-
-const BCRYPT_ROUNDS = 10;
+import { BCRYPT_ROUNDS } from '../common/constants';
 
 export type Profile = Pick<
   Employee,

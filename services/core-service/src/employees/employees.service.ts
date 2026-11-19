@@ -13,8 +13,7 @@ import { Role } from './role.enum';
 import * as bcrypt from 'bcrypt';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-
-const BCRYPT_ROUNDS = 10;
+import { BCRYPT_ROUNDS } from '../common/constants';
 
 @Injectable()
 export class EmployeesService implements OnApplicationBootstrap {

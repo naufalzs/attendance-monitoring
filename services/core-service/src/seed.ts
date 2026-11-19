@@ -5,10 +5,10 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { AppModule } from './app.module';
 import { Attendance } from './attendance/entities/attendance.entity';
+import { BCRYPT_ROUNDS } from './common/constants';
 import { Employee } from './employees/entities/employee.entity';
 import { Role } from './employees/role.enum';
 
-const BCRYPT_ROUNDS = 10;
 const DEMO_PASSWORD = 'password123';
 const DAYS_PER_EMPLOYEE = 10;
 
