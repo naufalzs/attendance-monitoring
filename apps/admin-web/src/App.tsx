@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
+import { AppLayout } from '@/components/app-layout'
 import { RequireAuth } from '@/components/require-auth'
 import { Toaster } from '@/components/ui/sonner'
 import { HomePage } from '@/pages/home-page'
@@ -10,7 +11,9 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route element={<RequireAuth />}>
-          <Route path="/" element={<HomePage />} />
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<HomePage />} />
+          </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
