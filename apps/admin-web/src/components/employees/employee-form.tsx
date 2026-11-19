@@ -62,7 +62,7 @@ export function EmployeeForm({
         <FormInput
           control={form.control}
           name="phone"
-          label="Phone"
+          label="Phone number"
           type="tel"
           autoComplete="off"
         />

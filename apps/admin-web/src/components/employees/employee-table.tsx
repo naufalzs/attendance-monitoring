@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table'
 import type { Employee } from '@/lib/employees'
 
-const COLUMNS = ['Name', 'Email', 'Position', 'Phone']
+const COLUMNS = ['Name', 'Email', 'Position', 'Phone number']
 
 export function EmployeeTable({
   employees,

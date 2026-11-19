@@ -30,11 +30,11 @@ export function ProfilePage() {
             <dd className="text-sm text-muted-foreground">{profile.position}</dd>
             <dt className="sr-only">Email</dt>
             <dd className="text-sm">{profile.email}</dd>
-            <dt className="sr-only">Phone</dt>
+            <dt className="sr-only">Phone number</dt>
             <dd className="flex items-center justify-center gap-1 text-sm sm:justify-start">
               {profile.phone}
               <Button variant="ghost" size="icon-xs" asChild>
-                <Link to="phone" aria-label="Edit phone">
+                <Link to="phone" aria-label="Edit phone number">
                   <PencilIcon />
                 </Link>
               </Button>

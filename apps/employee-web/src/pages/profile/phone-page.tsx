@@ -33,7 +33,7 @@ export function PhonePage() {
     try {
       const { data } = await api.patch<Profile>('/profile/me/phone', values)
       setProfile(data)
-      toast.success('Phone updated')
+      toast.success('Phone number updated')
       navigate('/profile')
     } catch (error) {
       toast.error(getErrorMessage(error))
@@ -42,7 +42,7 @@ export function PhonePage() {
 
   return (
     <Card>
-      <SubPageHeader title="Edit phone" />
+      <SubPageHeader title="Edit phone number" />
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
           <FieldGroup>
@@ -55,7 +55,7 @@ export function PhonePage() {
               autoFocus
             />
             <Button type="submit" disabled={!form.formState.isDirty || form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? 'Saving…' : 'Save phone'}
+              {form.formState.isSubmitting ? 'Saving…' : 'Save phone number'}
             </Button>
           </FieldGroup>
         </form>
