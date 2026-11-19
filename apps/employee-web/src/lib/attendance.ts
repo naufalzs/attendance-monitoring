@@ -25,6 +25,18 @@ export const jakartaLongDate = new Intl.DateTimeFormat('en-GB', {
   year: 'numeric',
 })
 
+const dayFormat = new Intl.DateTimeFormat('en-GB', {
+  timeZone: 'UTC',
+  weekday: 'short',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+})
+
+export function formatDay(date: string) {
+  return dayFormat.format(new Date(`${date}T00:00:00Z`))
+}
+
 export function todayInJakarta() {
   return jakartaDate.format(new Date())
 }

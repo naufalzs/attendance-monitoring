@@ -8,6 +8,7 @@ import { PhonePage } from '@/pages/profile/phone-page'
 import { PhotoPage } from '@/pages/profile/photo-page'
 import { ProfileLayout } from '@/pages/profile/profile-layout'
 import { ProfilePage } from '@/pages/profile/profile-page'
+import { SummaryPage } from '@/pages/summary-page'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
               <Route path="phone" element={<PhonePage />} />
               <Route path="password" element={<PasswordPage />} />
             </Route>
+            <Route path="/summary" element={<SummaryPage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/profile" replace />} />

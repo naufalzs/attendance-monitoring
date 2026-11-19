@@ -1,9 +1,12 @@
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { clearToken } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 
-const navItems = [{ to: '/profile', label: 'Profile' }]
+const navItems = [
+  { to: '/profile', label: 'Profile' },
+  { to: '/summary', label: 'Summary' },
+]
 
 export function AppLayout() {
   const navigate = useNavigate()
@@ -18,7 +21,9 @@ export function AppLayout() {
       <header className="border-b bg-background">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-4 px-4">
           <nav className="flex items-center gap-1">
-            <span className="mr-3 font-semibold text-primary">Attendance</span>
+            <Link to="/profile" className="mr-3 font-semibold text-primary">
+              Attendance
+            </Link>
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
