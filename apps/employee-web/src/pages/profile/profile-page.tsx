@@ -11,6 +11,14 @@ export function ProfilePage() {
   return (
     <Card>
       <CardContent className="relative flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left">
+        <Button
+          variant="link"
+          size="sm"
+          className="order-last h-auto p-0 sm:absolute sm:top-0 sm:right-4"
+          asChild
+        >
+          <Link to="password">Change password</Link>
+        </Button>
         <Link
           to="photo"
           aria-label="Change photo"
