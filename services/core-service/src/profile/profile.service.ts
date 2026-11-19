@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Employee } from '../employees/entities/employee.entity';
@@ -9,6 +11,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import * as bcrypt from 'bcrypt';
+import {
+  LOG_QUEUE,
+  PROFILE_UPDATED,
+  ProfileChange,
+  ProfileUpdatedEvent,
+} from './events/profile-updated.event';
+import { ClientProxy } from '@nestjs/microservices';
 
 const BCRYPT_ROUNDS = 10;
 
@@ -19,9 +28,13 @@ export type Profile = Pick<
 
 @Injectable()
 export class ProfileService {
+  private readonly logger = new Logger(ProfileService.name);
+
   constructor(
     @InjectRepository(Employee)
     private readonly employees: Repository<Employee>,
+    @Inject(LOG_QUEUE)
+    private readonly logQueue: ClientProxy,
   ) {}
 
   async getMe(employeeId: string): Promise<Profile> {
@@ -44,8 +57,9 @@ export class ProfileService {
   async updatePhone(employeeId: string, dto: UpdatePhoneDto): Promise<Profile> {
     await this.getMe(employeeId);
     await this.employees.update(employeeId, { phone: dto.phone });
-    // TODO: emit event + notify admin
-    return this.getMe(employeeId);
+    const profile = await this.getMe(employeeId);
+    this.publishProfileUpdated(employeeId, profile.name, ['phone']);
+    return profile;
   }
 
   async changePassword(
@@ -69,7 +83,7 @@ export class ProfileService {
     await this.employees.update(employeeId, {
       passwordHash: await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS),
     });
-    // TODO: emit event + notify admin
+    this.publishProfileUpdated(employeeId, employee.name, ['password']);
   }
 
   async updatePhoto(employeeId: string, filename: string): Promise<Profile> {
@@ -77,7 +91,26 @@ export class ProfileService {
     await this.employees.update(employeeId, {
       photoUrl: `/uploads/${filename}`,
     });
-    // TODO: emit event + notify admin
-    return this.getMe(employeeId);
+    const profile = await this.getMe(employeeId);
+    this.publishProfileUpdated(employeeId, profile.name, ['photo']);
+    return profile;
+  }
+
+  private publishProfileUpdated(
+    employeeId: string,
+    name: string,
+    changes: ProfileChange[],
+  ) {
+    const event: ProfileUpdatedEvent = {
+      employeeId,
+      name,
+      changes,
+      at: new Date().toISOString(),
+    };
+    this.logQueue.emit(PROFILE_UPDATED, event).subscribe({
+      error: (error) => {
+        this.logger.error(`Failed to publish ${PROFILE_UPDATED}`, error);
+      },
+    });
   }
 }
