@@ -1,3 +1,4 @@
+import { LogOutIcon } from 'lucide-react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router'
 import { NotificationBell } from '@/components/notification-bell'
 import { Button } from '@/components/ui/button'
@@ -20,10 +21,10 @@ export function AppLayout() {
   return (
     <div className="min-h-svh bg-muted">
       <header className="border-b bg-background">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-          <nav className="flex items-center gap-1">
-            <Link to="/" className="mr-3 font-semibold text-primary">
-              Attendance Admin
+        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-2 px-4 sm:gap-4">
+          <nav className="flex min-w-0 items-center gap-1">
+            <Link to="/" className="mr-1 font-semibold text-primary sm:mr-3">
+              Admin
             </Link>
             {navItems.map((item) => (
               <NavLink
@@ -32,7 +33,7 @@ export function AppLayout() {
                 end={item.to === '/'}
                 className={({ isActive }) =>
                   cn(
-                    'rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground',
+                    'rounded-md px-2 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground sm:px-3',
                     isActive && 'bg-accent text-accent-foreground',
                   )
                 }
@@ -41,15 +42,16 @@ export function AppLayout() {
               </NavLink>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <NotificationBell />
-            <Button variant="outline" size="sm" onClick={logout}>
-              Log out
+            <Button variant="outline" size="sm" onClick={logout} aria-label="Log out">
+              <LogOutIcon />
+              <span className="hidden sm:inline">Log out</span>
             </Button>
           </div>
         </div>
       </header>
-      <main className="mx-auto grid max-w-5xl gap-4 p-4">
+      <main className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)] gap-4 p-4">
         <Outlet />
       </main>
     </div>
